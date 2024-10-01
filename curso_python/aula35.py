@@ -12,3 +12,4 @@ while contador < 10:
     print(contador)
 
 print('Acabou')
+
