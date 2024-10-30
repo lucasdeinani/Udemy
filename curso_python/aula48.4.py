@@ -15,15 +15,10 @@ Create Read Update   Delete
 Criar, ler, alterar, apagar = lista [i] (CRUD)
 """
 
-lista = [10, 20, 30, 40]
-lista.append('Luiz')
-print(lista)
-nome = lista.pop()
-print(lista, nome)
-lista.append(1233)
-del lista[-1]
-print(lista)
-#lista.clear()
-lista.insert(0, 5)
-lista.insert(0, 'Luiz')
-print(lista)
+lista_a = [1, 2, 3]
+lista_b = [4, 5, 6]
+lista_c = lista_a + lista_b
+lista_d = lista_a.extend(lista_b)
+print(lista_c)
+print(lista_d)
+print(lista_a)
