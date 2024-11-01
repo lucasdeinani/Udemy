@@ -23,3 +23,34 @@ contrário disso:
 
 O primeiro dígito do CPF é 7
 """
+
+cpf_inteiro = '015.507.900-05'
+
+cpf_sem_formatacao = []
+
+posicao_numeros_cpf = 0
+soma = 0
+digito_1_digitado = 0
+digito_1_verificado = 0
+digito_1 = 0
+
+cpf_valido = True
+
+for caracter in cpf_inteiro[-1::-1]:
+    if caracter.isnumeric():
+        cpf_sem_formatacao.append([posicao_numeros_cpf, int(caracter)])
+        posicao_numeros_cpf += 1
+
+for posicao, numero_cpf in cpf_sem_formatacao:
+    soma += (posicao * numero_cpf)
+
+print(soma)
+
+digito_1_digitado = cpf_sem_formatacao[1][1]
+digito_1 = (soma * 10) % 11
+digito_1_verificado = 0 if digito_1 > 9 else digito_1
+
+cpf_valido = True if digito_1_verificado == digito_1_digitado else False
+
+print(digito_1_verificado)
+
