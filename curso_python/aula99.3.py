@@ -1,4 +1,5 @@
 # import sys
+# https://stackoverflow.com/questions/2386714/why-is-import-bad
 
 # import aula99_package
 # Não faz nada, melhor fazer isso
@@ -22,4 +23,6 @@
 
 import aula99_package
 
-print(aula99_package)
+print(aula99_package.soma_do_modulo(2, 3))
+print()
+aula99_package.fala_oi()
