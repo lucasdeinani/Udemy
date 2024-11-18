@@ -9,3 +9,4 @@
 # ambiente virtual, mas os mais comuns são:
 # venv env .venv .env
 # https://docs.python.org/3/library/venv.html
+# https://pypi.org
