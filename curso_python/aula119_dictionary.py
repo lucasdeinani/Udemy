@@ -36,19 +36,24 @@ def adiciona_item_lista(item):
         print('Você não digitou nada')
         return
 
-    lista_tarefa.append(item)
+    lista_tarefa.append(item.title())
 
-def listar_lista(lista):
-    if not verifica_listas(lista):
-        print('\nLISTA:')
-        for item in lista:
-            print(item)
+def listar_lista(comando, lista):
+    if not verifica_listas(comando, lista):
+       return None
 
-def remover_item_lista(lista_remove, lista_adiciona, item_removido_principal=None):
+    print('\nLISTA:')
+    for item in lista:
+        print(item)
+
+def remover_item_lista(comando, lista_remove, lista_adiciona):
+    if not verifica_listas(comando, lista_remove):
+        return None
+
     item = lista_remove.pop()
     lista_adiciona.append(item)
 
-    if item_removido_principal:
+    if comando == 'desfazer':
         print(f'Foi removido o {item.upper()} da lista.')
     else:
         print(f'Foi adicionado o {item.upper()} a lista.')
@@ -58,23 +63,19 @@ excluidos = []
 
 while True:
     print('Comandos: listar, desfazer, refazer')
-    comando = input('Digite uma tarefa ou comando: ').lower()
+    tarefa = input('Digite uma tarefa ou comando: ').lower()
 
-    if comando == 'listar':
-        if verifica_listas(comando, lista_tarefa):
-            listar_lista(lista_tarefa)
-    elif comando == 'desfazer':
-        if verifica_listas(comando, lista_tarefa):
-            remover_item_lista(lista_tarefa, excluidos, 'sim')
-    elif comando == 'refazer':
-        if verifica_listas(comando, excluidos):
-            remover_item_lista(excluidos, lista_tarefa)
-    elif comando == 'clear':
-        system('cls')
-        pass
-    elif comando == 'exit':
-        exit(0)
-    else:
-        adiciona_item_lista(comando.title())
+    comandos = {
+        'listar': lambda: listar_lista('listar', lista_tarefa),
+        'desfazer': lambda: remover_item_lista('desfazer', lista_tarefa, excluidos),
+        'refazer': lambda: remover_item_lista('refazer', excluidos, lista_tarefa),
+        'clear': lambda: system('cls'),
+        'exit': lambda: exit(0),
+        'adicionar': lambda: adiciona_item_lista(tarefa),
+    }
 
+    comando = comandos.get(tarefa) \
+            if comandos.get(tarefa) is not None \
+            else comandos['adicionar']
+    comando()
     print()
