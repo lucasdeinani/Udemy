@@ -1,61 +1,42 @@
-# @property - um getter no modo Pythônico
-# getter - um método para obter um atributo
-# cor -> get_cor()
-# modo pythônico - modo do Python de fazer coisas
-# @property é uma propriedade do objeto, ela
-# é um método que se comporta como um
-# atributo 🤯 🤯 🤯
-# Geralmente é usada nas seguintes situações:
+# @property + @setter - getter e setter no modo Pythônico
 # - como getter
 # - p/ evitar quebrar código cliente
 # - p/ habilitar setter
 # - p/ executar ações ao obter um atributo
-# Código cliente - é o código que usa seu código
+# Atributos que começar com um ou dois underlines
+# não devem ser usados fora da classe.
+#  🐍🤓🤯🤯🤯🤯
 class Caneta:
     def __init__(self, cor):
-        self.cor_tinta = cor
-
+        # ao invés de usar isso usa com underline
+        #self.cor_tinta = cor
+        # convenção, se ver 1 ou 2 underline significa que 
+        # o desenvolvedor não quer que use esse atributo 
+        # fora da classe
+        self._cor = cor
+        self._cor_tampa = None
+        
     @property
     def cor(self):
-        print('PROPERTY')
-        return self.cor_tinta
+        return self._cor
+
+    @cor.setter
+    def cor(self, valor):
+        if valor == 'Rosa':
+            raise ValueError('Não aceito essa cor')
+        self._cor = valor
 
     @property
     def cor_tampa(self):
-        return 123456
-############################
-
+        return self._cor_tampa
+        
+    @cor_tampa.setter
+    def cor_tampa(self, valor):
+        self._cor_tampa = valor
 
 caneta = Caneta('Azul')
 print(caneta.cor)
+caneta.cor = 'Pink'
 print(caneta.cor)
-print(caneta.cor)
-print(caneta.cor)
-print(caneta.cor)
-print(caneta.cor)
+caneta.cor_tampa = 'Azul'
 print(caneta.cor_tampa)
-# print(caneta.cor_tampa()) # TypeError: 'int' object is not callable
-
-
-#########################################
-
-# class Caneta:
-#     def __init__(self, cor):
-#         # Outras linguagens tem 
-#         # private protected public
-#         self.cor = cor
-     
-#     def get_cor(self):
-#         print('GET COR')
-#         return self.cor
-# 
-# ############################
-
-
-# caneta = Caneta('Azul')
-# print(caneta.get_cor())
-# print(caneta.get_cor())
-# print(caneta.get_cor())
-# print(caneta.get_cor())
-# print(caneta.get_cor())
-# print(caneta.get_cor())
