@@ -18,14 +18,43 @@ def adiciona_um_mes(data: datetime) -> datetime:
 
 def conta_meses(data_ini: datetime, data_fim: datetime) -> int:
     meses = 0
-    while data_ini <= data_fim:
+    while data_ini < data_fim:
         data_ini = adiciona_um_mes(data_ini)
         meses += 1
     return meses
 
 
+def mostra_vencimento_valor(
+    data_ini: datetime,
+    data_fim: datetime,
+    emprestimo: float
+) -> None:
+    fmt = '%d/%m/%Y'
+    meses = 0
+    data = data_ini
+    valor_parcela: float = 0.0
+
+    while data < data_fim:
+        data = adiciona_um_mes(data)
+        meses += 1
+
+    valor_parcela = emprestimo / meses
+
+    meses = 0
+    data = data_ini
+    while data < data_fim:
+        data = adiciona_um_mes(data)
+        meses += 1
+        print(
+            '------\n'
+            f'{meses}ª PARCELA\n'
+            f'Vencimento: {data.strftime(fmt)}\n'
+            f'Valor: R${valor_parcela:.2f}'
+        )
+
+
 emprestimo = 1000000.00
 fmt = '%d/%m/%Y'
 data_emprestimo = datetime.strptime('20/12/2020', fmt)
-data = data_emprestimo
 data_final_emprestimo = data_emprestimo + relativedelta(years=5)
+mostra_vencimento_valor(data_emprestimo, data_final_emprestimo, emprestimo)
