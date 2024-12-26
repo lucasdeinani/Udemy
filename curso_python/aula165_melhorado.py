@@ -27,13 +27,11 @@ def mostra_parcelas_datas_valor(
     formato: str,
     valor_parcela: float
 ):
-    mes = 0
     print(f'Foi solicitado um empréstimo de R${emprestimo:,.2f}')
-    for data in datas_parcelas:
-        mes += 1
+    for mes, data in enumerate(datas_parcelas):
         print(
             '---------------------\n'
-            f'{mes}ª PARCELA\n'
+            f'{mes+1}ª PARCELA\n'
             f'Vencimento: {data.strftime(formato)}\n'
             f'Valor: R${valor_parcela:,.2f}'
         )
