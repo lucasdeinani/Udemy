@@ -38,12 +38,14 @@ nomes = ['Luiz', 'Maria', 'Helena', 'Joana']
 # random.sample(Iterável, k=N)
 #   -> Escolhe elementos do iterável e retorna outro iterável (não repete)
 novos_nomes = random.sample(nomes, k=3)
+novos_nomes = random.sample(nomes, k=len(nomes))
 # print(nomes)
 # print(novos_nomes)
 
 # random.choices(Iterável, k=N)
 #   -> Escolhe elementos do iterável e retorna outro iterável (repete valores)
 novos_nomes = random.choices(nomes, k=3)
+novos_nomes = random.choices(nomes, k=len(nomes))
 # print(nomes)
 # print(novos_nomes)
 
