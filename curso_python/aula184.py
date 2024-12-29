@@ -15,7 +15,8 @@
 
 # type: ignore
 # Serve para ignorar o erro do pylance
-from dotenv import load_dotenv  # type: ignore
+# from dotenv import load_dotenv  # type: ignore
+from dotenv import load_dotenv
 import os
 
 
