@@ -11,7 +11,6 @@
 from pathlib import Path
 
 from pypdf import PdfReader, PdfWriter
-# from pypdf import PdfMerger NÃO EXISTE MAIS
 
 PASTA_RAIZ = Path(__file__).parent
 PASTA_ORIGINAIS = PASTA_RAIZ / 'pdfs_originais'
@@ -48,32 +47,19 @@ imagem0 = page0.images[0]
 #     writer.write(arquivo)
 
 # para um arquivo PDF com todas as páginas juntas
-# writer = PdfWriter()
+writer = PdfWriter()
 
-# with open(PASTA_NOVA / 'page0.pdf', 'wb') as arquivo:
-#     for page in reader.pages:
-#         writer.add_page(page)
+with open(PASTA_NOVA / 'page0.pdf', 'wb') as arquivo:
+    for page in reader.pages:
+        writer.add_page(page)
 
-#     writer.write(arquivo)
+    writer.write(arquivo)
 
 # para cada páginas em um PDF separado
 
-# for i, page in enumerate(reader.pages):
-#     writer = PdfWriter()
+for i, page in enumerate(reader.pages):
+    writer = PdfWriter()
 
-#     with open(PASTA_NOVA / f'page{i}.pdf', 'wb') as arquivo:
-#         writer.add_page(page)
-#         writer.write(arquivo)
-
-
-files = [
-    PASTA_NOVA / 'page1.pdf',
-    PASTA_NOVA / 'page0.pdf',
-]
-
-merger = PdfWriter()
-for file in files:
-    merger.append(file)
-
-with open(PASTA_NOVA / 'MERGED.pdf', 'wb') as juntos:
-    merger.write(juntos)
+    with open(PASTA_NOVA / f'page{i}.pdf', 'wb') as arquivo:
+        writer.add_page(page)
+        writer.write(arquivo)
