@@ -1,0 +1,10 @@
+# Feito do zero a configuração do Python
+# Criado ambiente
+# python -m venv venv
+# Instalado PySide6
+# pip install pyside6
+# Atualizado pip
+# python -m pip install --upgrade pip
+# Adicionando requirements.txt
+# pip freeze > requirements.txt
+# .gitignore apenas copiado o arquivo
