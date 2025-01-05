@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
         # tamanho da tela com o conteúdo
         self.setFixedSize(self.width(), self.height())
 
-    def addToVLayout(self, widget: QWidget):
+    def addWidgetToVLayout(self, widget: QWidget):
         self.vLayout.addWidget(widget)
         # Teve que ser criado esse método para que ele
         # ajuste a tela aos itens que estão nela

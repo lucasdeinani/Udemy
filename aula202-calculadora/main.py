@@ -8,7 +8,7 @@ from display import Display
 from info import Info
 from variables import WINDOW_ICON_PATH
 from styles import setupTheme
-from buttons import Button
+from buttons import ButtonsGrid
 
 
 if __name__ == '__main__':
@@ -32,17 +32,17 @@ if __name__ == '__main__':
 
     # Info
     info = Info('2.0 ^ 10.0 = 1024')
-    window.addToVLayout(info)
+    window.addWidgetToVLayout(info)
 
     # Display
     display = Display()
     # Adiciona um Placeholder
     # display.setPlaceholderText('Digite algo')
-    window.addToVLayout(display)
+    window.addWidgetToVLayout(display)
 
-    # Button
-    button = Button('Texto do botão')
-    window.addToVLayout(button)
+    # Grid
+    buttonsGrid = ButtonsGrid()
+    window.vLayout.addLayout(buttonsGrid)
 
     # label1 utilizado apenas para exemplo
     # label1 = QLabel('O meu texto')
