@@ -8,3 +8,5 @@
 # Adicionando requirements.txt
 # pip freeze > requirements.txt
 # .gitignore apenas copiado o arquivo
+
+# Rever aula 357
