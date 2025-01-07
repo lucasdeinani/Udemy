@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from display import Display
+    from main_window import MainWindow
     from info import Info
 
 
@@ -34,12 +35,13 @@ class Button(QPushButton):
 
 class ButtonsGrid(QGridLayout):
     def __init__(
-        self, display: 'Display', info: 'Info', *args, **kwargs
+        self, display: 'Display', info: 'Info', window: 'MainWindow',
+        *args, **kwargs
     ) -> None:
         super().__init__(*args, **kwargs)
 
         self._gridMask = [
-            ['C', '◀', '^', '/'],
+            ['C', 'D', '^', '/'],
             ['7', '8', '9', '*'],
             ['4', '5', '6', '-'],
             ['1', '2', '3', '+'],
@@ -47,6 +49,7 @@ class ButtonsGrid(QGridLayout):
         ]
         self.display: 'Display' = display
         self.info: 'Info' = info
+        self.window = window
         self._equation: str = ''
         self._equationInitialValue: str = 'Sua conta'
         self._left = None
@@ -96,6 +99,8 @@ class ButtonsGrid(QGridLayout):
             # em mais coisas, vamos fazer dessa outra forma
             # button.clicked.connect(self.display.clear)
             self._connectButtonClicked(button, self._clear)
+        elif buttonText == 'D':
+            self._connectButtonClicked(button, self.display.backspace)
         elif buttonText in '+-/*^':
             self._connectButtonClicked(
                 button,
@@ -134,6 +139,7 @@ class ButtonsGrid(QGridLayout):
         # Se a pessoa clicou no operador
         # sem configurar qualquer número
         if not isValidNumber(displayText) and self._left is None:
+            self._showError('Você não digitou nada.')
             return
 
         # Se houver algo no número da esquerda, não
@@ -148,6 +154,7 @@ class ButtonsGrid(QGridLayout):
         displayText = self.display.text()
 
         if not isValidNumber(displayText):
+            self._showError('Conta incompleta.')
             return
 
         self._right = float(displayText)
@@ -162,9 +169,9 @@ class ButtonsGrid(QGridLayout):
             else:
                 result = eval(self.equation)
         except ZeroDivisionError:
-            print('Zero Division Error')
+            self._showError('Divisão por zero.')
         except OverflowError:
-            print('Número muito grande')
+            self._showError('Essa conta não pode ser realizada.')
 
         self.display.clear()
         self.info.setText(f'{self.equation} = {result}')
@@ -172,5 +179,39 @@ class ButtonsGrid(QGridLayout):
         self._left = result
         self._right = None
 
-        if result == 'error':
+        if result != 'error':
             self._left = None
+        else:
+            self._clear()
+
+    def _makeDialog(self, text):
+        msgBox = self.window.makeMsgBox()
+        msgBox.setText(text)
+        return msgBox
+
+    def _showError(self, text):
+        msgBox = self._makeDialog(text)
+        # Mostra uma mensagem no MsgBox
+        # msgBox.setInformativeText('Algo de errrado não está certo nisso')
+        msgBox.setIcon(msgBox.Icon.Critical)
+
+        # Adicionar opções de botões para mostrar ao usuário.
+        # Para adicionar mais de um botão deve-se utilizar pipe
+        # msgBox.setStandardButtons(
+        #     msgBox.StandardButton.Ok |
+        #     msgBox.StandardButton.Cancel
+        # )
+
+        # Caso queira alterar o texto de um botão pode-se fazer desta forma
+        # msgBox.button(msgBox.StandardButton.NoToAll).setText('Não pra todos')
+        # result = msgBox.exec()
+
+        # Conseguir saber o que o usuário clicou
+        # if result == msgBox.StandardButton.Ok:
+        #     print('Usuário clicou em Ok')
+        msgBox.exec()
+
+    def _showInfo(self, text):
+        msgBox = self._makeDialog(text)
+        msgBox.setIcon(msgBox.Icon.Information)
+        msgBox.exec()

@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout
+from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QMessageBox
 
 
 class MainWindow(QMainWindow):
@@ -27,3 +27,6 @@ class MainWindow(QMainWindow):
         # ajuste a tela aos itens que estão nela
         # self.adjustFixedSize()  # Tive que tirar isso pois bugava minha tela
         # Deixado apenas na main.py o método adjustFixedSize()
+
+    def makeMsgBox(self):
+        return QMessageBox(self)
