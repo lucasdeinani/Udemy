@@ -1,11 +1,18 @@
 from PySide6.QtWidgets import QLineEdit
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QKeyEvent
 
 from variables import BIG_FONT_SIZE, TEXT_MARGIN, MINIMUM_WIDTH
+from utils import isEmpty, isNumOrDot
 
 
 class Display(QLineEdit):
+    eqPressed = Signal()
+    delPressed = Signal()
+    clearPressed = Signal()
+    inputPressed = Signal(str)
+    operatorPressed = Signal(str)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.configStyle()
@@ -20,6 +27,42 @@ class Display(QLineEdit):
         self.setTextMargins(*margins)
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
-        # print(event.text()) para saber o texto que foi precionado
-        event.key()
-        return super().keyPressEvent(event)
+        text = event.text().strip()
+        key = event.key()  # Pega o valor da key precionada
+        KEYS = Qt.Key
+
+        isEnter = key in [KEYS.Key_Enter, KEYS.Key_Return, KEYS.Key_Equal,]
+        isDelete = key in [KEYS.Key_Delete, KEYS.Key_Backspace, KEYS.Key_D,]
+        isEsc = key in [KEYS.Key_Escape, KEYS.Key_C,]
+        isOperator = key in [
+            KEYS.Key_Slash, KEYS.Key_Plus, KEYS.Key_Minus, KEYS.Key_Asterisk,
+            KEYS.Key_P,
+        ]
+
+        if isEnter:
+            print('EQ pressionado, sinal emitido', type(self).__name__)
+            self.eqPressed.emit()
+            print('Pressionou Enter')
+        elif isDelete:
+            print('isDelete pressionado, sinal emitido', type(self).__name__)
+            self.delPressed.emit()
+            print('Pressionou Enter')
+        elif isEsc:
+            print('isEsc pressionado, sinal emitido', type(self).__name__)
+            self.clearPressed.emit()
+            print('Pressionou Enter')
+        elif isOperator:
+            print('isOperator pressionado, sinal emitido', type(self).__name__)
+            self.operatorPressed.emit(text)
+            print('Pressionou Enter')
+        elif isNumOrDot(text):
+            print(
+                'inputPressed pressionado, sinal emitido', type(self).__name__)
+            self.inputPressed.emit(text)
+            print('Pressionou Enter')
+        elif isEmpty(text):
+            return event.ignore()
+
+        # Aceita qualquer tecla sem precisar
+        # configurar cada uma como fazemos acima
+        # return super().keyPressEvent(event)

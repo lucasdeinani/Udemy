@@ -68,7 +68,19 @@ class ButtonsGrid(QGridLayout):
         self._equation = value
         self.info.setText(value)
 
+    def vouApagarVocê(self, *args):
+        print(
+            'Sinal recebido por "vouApagarVocê" em',
+            type(self).__name__,
+            args
+        )
+
     def _makeGrid(self):
+        self.display.eqPressed.connect(self.vouApagarVocê)
+        self.display.delPressed.connect(self.display.backspace)
+        self.display.clearPressed.connect(self.vouApagarVocê)
+        self.display.inputPressed.connect(self.vouApagarVocê)
+
         for i, row in enumerate(self._gridMask):
             for j, buttonText in enumerate(row):
                 # Melhor sempre por boa prática utilizar uma variável para
@@ -123,6 +135,10 @@ class ButtonsGrid(QGridLayout):
             return
 
         self.display.insert(buttonText)
+        # Tive que colocar este setFocus() pois ao clicar nos botões
+        # ele tirava o foco do display, desssa forma tinha que ficar
+        # clicando no display para retomar o foco correto
+        self.display.setFocus()
 
     def _clear(self):
         self._left = None
