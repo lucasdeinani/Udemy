@@ -40,26 +40,17 @@ class Display(QLineEdit):
         ]
 
         if isEnter:
-            print('EQ pressionado, sinal emitido', type(self).__name__)
             self.eqPressed.emit()
-            print('Pressionou Enter')
         elif isDelete:
-            print('isDelete pressionado, sinal emitido', type(self).__name__)
             self.delPressed.emit()
-            print('Pressionou Enter')
         elif isEsc:
-            print('isEsc pressionado, sinal emitido', type(self).__name__)
             self.clearPressed.emit()
-            print('Pressionou Enter')
         elif isOperator:
-            print('isOperator pressionado, sinal emitido', type(self).__name__)
+            if text.lower() == 'p':
+                text = '^'
             self.operatorPressed.emit(text)
-            print('Pressionou Enter')
         elif isNumOrDot(text):
-            print(
-                'inputPressed pressionado, sinal emitido', type(self).__name__)
             self.inputPressed.emit(text)
-            print('Pressionou Enter')
         elif isEmpty(text):
             return event.ignore()
 

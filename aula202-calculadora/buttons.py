@@ -1,18 +1,16 @@
 import math
-
-from PySide6.QtWidgets import QPushButton, QGridLayout
-from PySide6.QtCore import Slot
-
-from variables import MEDIUM_FONT_SIZE
-from utils import isNumOrDot, isEmpty, isValidNumber
-from display import Display
-
 from typing import TYPE_CHECKING
+
+from PySide6.QtCore import Slot
+from PySide6.QtWidgets import QPushButton, QGridLayout
+
+from utils import isNumOrDot, isEmpty, isValidNumber
+from variables import MEDIUM_FONT_SIZE
 
 if TYPE_CHECKING:
     from display import Display
-    from main_window import MainWindow
     from info import Info
+    from main_window import MainWindow
 
 
 class Button(QPushButton):
@@ -45,7 +43,7 @@ class ButtonsGrid(QGridLayout):
             ['7', '8', '9', '*'],
             ['4', '5', '6', '-'],
             ['1', '2', '3', '+'],
-            ['0',  '', '.', '='],
+            ['N', '0', '.', '='],
         ]
         self.display: 'Display' = display
         self.info: 'Info' = info
@@ -68,18 +66,12 @@ class ButtonsGrid(QGridLayout):
         self._equation = value
         self.info.setText(value)
 
-    def vouApagarVocê(self, *args):
-        print(
-            'Sinal recebido por "vouApagarVocê" em',
-            type(self).__name__,
-            args
-        )
-
     def _makeGrid(self):
-        self.display.eqPressed.connect(self.vouApagarVocê)
+        self.display.eqPressed.connect(self._eq)
         self.display.delPressed.connect(self.display.backspace)
-        self.display.clearPressed.connect(self.vouApagarVocê)
-        self.display.inputPressed.connect(self.vouApagarVocê)
+        self.display.clearPressed.connect(self._clear)
+        self.display.inputPressed.connect(self._insertToDisplay)
+        self.display.operatorPressed.connect(self._configLeftOp)
 
         for i, row in enumerate(self._gridMask):
             for j, buttonText in enumerate(row):
@@ -92,12 +84,15 @@ class ButtonsGrid(QGridLayout):
                     button.setProperty('cssClass', 'specialButton')
                     self._configSpecialButton(button)
 
-                if buttonText == '0':
-                    self.addWidget(button, i, j, 1, 2)
-                elif buttonText != '':
-                    self.addWidget(button, i, j)
+                # Comentado esta parte pois faltou uma forma
+                # de infomar número negativo
+                # if buttonText == '0':
+                #     self.addWidget(button, i, j, 1, 2)
+                # elif buttonText != '':
+                    # self.addWidget(button, i, j)
+                self.addWidget(button, i, j)
 
-                slot = self._makeSlot(self._insertButtonTextToDisplay, button)
+                slot = self._makeSlot(self._insertToDisplay, buttonText)
                 self._connectButtonClicked(button, slot)
 
     def _connectButtonClicked(self, button: Button, slot):
@@ -116,10 +111,16 @@ class ButtonsGrid(QGridLayout):
         elif buttonText in '+-/*^':
             self._connectButtonClicked(
                 button,
-                self._makeSlot(self._operatorClicked, button)
+                self._makeSlot(self._configLeftOp, buttonText)
             )
         elif buttonText == '=':
             self._connectButtonClicked(button, self._eq)
+
+        # Tive que colocar este setFocus pois ao clicar nos botões
+        # ele tirava o foco do display, desssa forma tinha que ficar
+        # clicando no display para retomar o foco correto.
+        # No WINDOWS notei isso
+        self._connectButtonClicked(button, self.display.setFocus)
 
     def _makeSlot(self, func, *args, **kwargs):
         @Slot(bool)
@@ -127,19 +128,17 @@ class ButtonsGrid(QGridLayout):
             func(*args, **kwargs)
         return realSlot
 
-    def _insertButtonTextToDisplay(self, button: Button):
-        buttonText = button.text()
-        newDisplayValue = self.display.text() + buttonText
+    @Slot()
+    def _insertToDisplay(self, text):
+        newDisplayValue = self.display.text() + text
 
         if not isValidNumber(newDisplayValue):
             return
 
-        self.display.insert(buttonText)
-        # Tive que colocar este setFocus() pois ao clicar nos botões
-        # ele tirava o foco do display, desssa forma tinha que ficar
-        # clicando no display para retomar o foco correto
+        self.display.insert(text)
         self.display.setFocus()
 
+    @Slot()
     def _clear(self):
         self._left = None
         self._right = None
@@ -147,8 +146,8 @@ class ButtonsGrid(QGridLayout):
         self.equation = self._equationInitialValue
         self.display.clear()
 
-    def _operatorClicked(self, button: Button):
-        buttonText = button.text()  # +-/* (etx...)
+    @Slot()
+    def _configLeftOp(self, text):
         displayText = self.display.text()  # Deverá ser meu número _left
         self.display.clear()  # Limpa o display
 
@@ -163,9 +162,10 @@ class ButtonsGrid(QGridLayout):
         if self._left is None:
             self._left = float(displayText)
 
-        self._op = buttonText
+        self._op = text
         self.equation = f'{self._left} {self._op} ??'
 
+    @Slot()
     def _eq(self):
         displayText = self.display.text()
 
@@ -195,10 +195,8 @@ class ButtonsGrid(QGridLayout):
         self._left = result
         self._right = None
 
-        if result != 'error':
+        if result == 'error':
             self._left = None
-        else:
-            self._clear()
 
     def _makeDialog(self, text):
         msgBox = self.window.makeMsgBox()
