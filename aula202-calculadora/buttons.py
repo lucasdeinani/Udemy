@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QPushButton, QGridLayout
 
-from utils import isNumOrDot, isEmpty, isValidNumber
+from utils import isNumOrDot, isEmpty, isValidNumber, convertToNumber
 from variables import MEDIUM_FONT_SIZE
 
 if TYPE_CHECKING:
@@ -108,6 +108,8 @@ class ButtonsGrid(QGridLayout):
             self._connectButtonClicked(button, self._clear)
         elif buttonText == 'D':
             self._connectButtonClicked(button, self.display.backspace)
+        elif buttonText == 'N':
+            self._connectButtonClicked(button, self._invertNumber)
         elif buttonText in '+-/*^':
             self._connectButtonClicked(
                 button,
@@ -127,6 +129,17 @@ class ButtonsGrid(QGridLayout):
         def realSlot(_):
             func(*args, **kwargs)
         return realSlot
+
+    @Slot()
+    def _invertNumber(self):
+        displayText = self.display.text()
+
+        if not isValidNumber(displayText):
+            return
+
+        # Duas formas de deixar negativo
+        newNumber = convertToNumber(displayText) * -1  # -float(displayText)
+        self.display.setText(str(newNumber))
 
     @Slot()
     def _insertToDisplay(self, text):
@@ -160,7 +173,7 @@ class ButtonsGrid(QGridLayout):
         # Se houver algo no número da esquerda, não
         # fizemos nada. Aguardaremos o número da direita
         if self._left is None:
-            self._left = float(displayText)
+            self._left = convertToNumber(displayText)
 
         self._op = text
         self.equation = f'{self._left} {self._op} ??'
@@ -169,19 +182,20 @@ class ButtonsGrid(QGridLayout):
     def _eq(self):
         displayText = self.display.text()
 
-        if not isValidNumber(displayText):
+        if not isValidNumber(displayText) or self._left is None:
             self._showError('Conta incompleta.')
             return
 
-        self._right = float(displayText)
+        self._right = convertToNumber(displayText)
         self.equation = f'{self._left} {self._op} {self._right}'
 
         result = 'error'
         try:
-            if '^' in self.equation and isinstance(self._left, float):
+            if '^' in self.equation and isinstance(self._left, int | float):
                 # duas formas de serem feitas
                 # result = eval(self.equation.replace('^', '**'))
                 result = math.pow(self._left, self._right)
+                result = convertToNumber(str(result))
             else:
                 result = eval(self.equation)
         except ZeroDivisionError:

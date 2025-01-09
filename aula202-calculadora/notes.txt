@@ -8,5 +8,21 @@
 # Adicionando requirements.txt
 # pip freeze > requirements.txt
 # .gitignore apenas copiado o arquivo
+# Pillow para gerar a aplicação com o icon, ele converte .png ou .exe para .ico
 
 # Rever aula 357
+
+# Empacotamento do meu sistema
+# https://pyinstaller.org/en/stable/
+# https://www.pythonguis.com/tutorials/packaging-pyside6-applications-windows-pyinstaller-installforge/
+
+# pyinstaller --name="Calculadora" --noconfirm --onefile --add-data='C:\Users\Administrator\Desktop\Udemy\Udemy\aula202-calculadora\files\;files\' --icon='C:\Users\Administrator\Desktop\Udemy\Udemy\aula202-calculadora\files\icon.png' --noconsole --clean --log-level=WARN C:\Users\Administrator\Desktop\Udemy\Udemy\aula202-calculadora\main.py
+
+# Setando caminho
+# pyinstaller --name="Calculadora" --noconfirm --onefile --add-data='..\files\;files\' --icon='..\files\icon.png' --noconsole --clean --log-level=WARN --distpath="__localcode/dist" --workpath="__localcode/build" --specpath="__localcode/"  main.py
+
+# Usando o .spec 
+# pyinstaller __localcode/Calculadora.spec
+
+# Setando caminho com o .spec
+# pyinstaller --distpath __localcode/dist --workpath __localcode/build __localcode/Calculadora.spec
