@@ -10,6 +10,9 @@
 # .gitignore apenas copiado o arquivo
 # Pillow para gerar a aplicação com o icon, ele converte .png ou .exe para .ico
 
+# Instalar todos pacotes do requirements.txt
+# pip install -r requirements.txt
+
 # Rever aula 357
 
 # Empacotamento do meu sistema
@@ -26,3 +29,9 @@
 
 # Setando caminho com o .spec
 # pyinstaller --distpath __localcode/dist --workpath __localcode/build __localcode/Calculadora.spec
+
+# QtDesing
+# Dentro da pasta
+# 
+# Compilado .\venv\Lib\site-packages\PySide6\designer.exe
+# https://build-system.fman.io/qt-designer-download

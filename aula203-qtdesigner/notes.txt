@@ -1,0 +1,5 @@
+# Instalar todos pacotes do requirements.txt
+# pip install -r requirements.txt
+
+# Converter .ui para .py
+# pyside6-uic .\ui\window.ui -o .\src\window.py
