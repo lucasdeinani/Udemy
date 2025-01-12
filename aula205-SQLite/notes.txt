@@ -1,0 +1,14 @@
+# python -m venv venv
+
+# pip install -r requirements.txt
+
+# SQLite comummente utilizados para programas de 
+# celular onde requer uma base de dados que utilize SQL
+# Pois o SQLite é melhor do que um arquivo JSON
+# Dá para realizar consultas aprimoradas
+# https://www.sqlite.org/doclist.html
+
+# Já vem instalado com o python
+
+# Tutorial SQLite
+# https://www.techonthenet.com/sqlite/index.php
