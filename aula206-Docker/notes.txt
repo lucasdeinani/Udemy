@@ -2,13 +2,22 @@
 
 # pip install -r requirements.txt
 
-# SQLite comummente utilizados para programas de 
-# celular onde requer uma base de dados que utilize SQL
-# Pois o SQLite é melhor do que um arquivo JSON
-# Dá para realizar consultas aprimoradas
-# https://www.sqlite.org/doclist.html
+# Comandos Docker
 
-# Já vem instalado com o python
+# Sobe container
+# docker-compose up
 
-# Tutorial SQLite
-# https://www.techonthenet.com/sqlite/index.php
+# Quais containers rodando
+# docker ps
+
+# Containers existentes
+# docker ps -a
+
+# Sobe container e libera terminal
+# docker-compose up -d
+
+# Parar container
+# docker container stop "container_id" -> podendo ser os 3 primeiros caracteres
+
+# Iniciar um container específico
+# docker container start "container_id" -> podendo ser os 3 primeiros caracteres
