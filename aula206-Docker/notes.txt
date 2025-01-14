@@ -21,3 +21,16 @@
 
 # Iniciar um container específico
 # docker container start "container_id" -> podendo ser os 3 primeiros caracteres
+
+# Para não enviar os dados sensíveis
+# Pode-se criar uma arquivo .env
+# Apenas lembrar de criar o .env-example
+
+# Para centralizar os caminhos do .env pode-se utilizar dotenv
+# pip install python-dotenv
+
+# Necessita utilizar
+# import dotenv
+# import os
+
+# os.environ['nome da variável']
