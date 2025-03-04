@@ -10,7 +10,7 @@ import pymysql
 import pymysql.cursors
 
 TABLE_NAME = 'customers'
-CURRENT_CURSOR = pymysql.cursors.DictCursor
+CURRENT_CURSOR = pymysql.cursors.SSDictCursor
 
 dotenv.load_dotenv()
 
@@ -158,7 +158,43 @@ with connection:
             'WHERE id = %s '
         )
         cursor.execute(sql, ('Eleonor', 102, 4))
-        resultFromSelect = cursor.execute(f'SELECT * FROM {TABLE_NAME} ')
+        # Tem que ter esse commit para salvar os ajustes em banco efetivamente
+        connection.commit()
+
+        cursor.execute(f'SELECT * FROM {TABLE_NAME} ')
+        # data7 = cursor.fetchall()
+
+        # for row in cursor.fetchall():
+        #     _id, name, age = row
+        #     print(_id, name, age)
+
+        # for row in cursor.fetchall():
+        #     _id, name, age = row.items()
+        #     print(_id, name, age)
+
+        # data7 = cursor.fetchall()
+
+        # print()
+        # print('For 1: ')
+        # for row in data7:
+        #     print(row)
+
+        # print()
+        # print('For 2: ')
+        # for row in data7:
+        #     print(row)
+
+        # print()
+        # print('For 1: ')
+        # for row in cursor.fetchall():
+        #     print(row)
+
+        # print()
+        # print('For 2: ')
+        # cursor.scroll(-2)  # Relative
+        # cursor.scroll(0, 'absolute')
+        # for row in cursor.fetchall():
+        #     print(row)
 
         # Utilizando isso cursor.fetchall(), tu consegue não copiar
         # para uma variável inumeros dados, para não deixar lento, podendo
@@ -166,47 +202,17 @@ with connection:
         # próximos x nº de registros
 
         # Ao utilizar o SSDictCursor deve-se utilizar fetchall_unbuffered()
-        data6 = cursor.fetchall()
-        for row in data6:
+        print()
+        print('For 1: ')
+        for row in cursor.fetchall_unbuffered():
             print(row)
 
-        print('resultFromSelect', resultFromSelect)
-        print('len(data6)', len(data6))
-        print('rowcount', cursor.rowcount)
+            if row['id'] >= 5:
+                break
 
-        sql = (
-            f'INSERT INTO {TABLE_NAME} '
-            '(nome, idade) '
-            'VALUES (%s, %s) '
-        )
-        data = ('Luiz', 18)
-        cursor.execute(sql, data)
-        print('lastrowid', cursor.lastrowid)
-
-        sql = (
-            f'INSERT INTO {TABLE_NAME} '
-            '(nome, idade) '
-            'VALUES (%(name)s, %(age)s) '
-        )
-        data7 = (
-            {"name": "Sah", "age": 33, },
-            {"name": "Júlua", "age": 74, },
-            {"name": "Rose", "age": 53, },
-        )
-        cursor.executemany(sql, data7)
-        print('lastrowid', cursor.lastrowid)
-
-        cursor.execute(
-            f'SELECT id FROM {TABLE_NAME} ORDER BY id DESC LIMIT 1 '
-        )
-        lastIdFromSelect = cursor.fetchone()
-
-        print('lastrowid na mão', lastIdFromSelect)
-
-        cursor.execute(f'SELECT * FROM {TABLE_NAME} ')
-        cursor.fetchall()
-
-        print('rownumber', cursor.rownumber)
-
-    # Tem que ter esse commit para salvar os ajustes em banco efetivamente
-    connection.commit()
+        print()
+        print('For 2: ')
+        # cursor.scroll(-1)  # Dará erro - Ele nunca volta
+        # cursor.scroll(1)  # Não dará erro
+        for row in cursor.fetchall_unbuffered():
+            print(row)
