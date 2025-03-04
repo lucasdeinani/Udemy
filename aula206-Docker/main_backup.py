@@ -3,14 +3,11 @@
 # Pypy: https://pypi.org/project/pymysql/
 # GitHub: https://github.com/PyMySQL/PyMySQL
 import os
-from typing import cast
 
 import dotenv
 import pymysql
-import pymysql.cursors
 
 TABLE_NAME = 'customers'
-CURRENT_CURSOR = pymysql.cursors.SSDictCursor
 
 dotenv.load_dotenv()
 
@@ -19,11 +16,7 @@ connection = pymysql.connect(
     user=os.environ['MYSQL_USER'],
     password=os.environ['MYSQL_PASSWORD'],
     database=os.environ['MYSQL_DATABASE'],
-    charset='utf8mb4',
-    cursorclass=CURRENT_CURSOR,
-    # cursorclass=pymysql.cursors.SSDictCursor,  # Para consultas unbuffer
-    # (sem salvar em memória), para clientes lentos ou conexões lentas.
-    # Contra, não consegue saber a quantidade de linhas
+    charset='utf8mb4'
 )
 # Como tanto o connectio quanto o cursor são Context Manager,
 # ou seja, podemos utilizar with para abrir e fechar conexões
@@ -150,8 +143,6 @@ with connection:
 
     # Atualizando valores com UPDATE, WHERe e placeholders no PyMySQL
     with connection.cursor() as cursor:
-        cursor = cast(CURRENT_CURSOR, cursor)
-
         sql = (
             f'UPDATE {TABLE_NAME} '
             'SET nome = %s, idade = %s '
@@ -168,51 +159,6 @@ with connection:
         #     _id, name, age = row
         #     print(_id, name, age)
 
-        # for row in cursor.fetchall():
-        #     _id, name, age = row.items()
-        #     print(_id, name, age)
-
-        # data7 = cursor.fetchall()
-
-        # print()
-        # print('For 1: ')
-        # for row in data7:
-        #     print(row)
-
-        # print()
-        # print('For 2: ')
-        # for row in data7:
-        #     print(row)
-
-        # print()
-        # print('For 1: ')
-        # for row in cursor.fetchall():
-        #     print(row)
-
-        # print()
-        # print('For 2: ')
-        # cursor.scroll(-2)  # Relative
-        # cursor.scroll(0, 'absolute')
-        # for row in cursor.fetchall():
-        #     print(row)
-
-        # Utilizando isso cursor.fetchall(), tu consegue não copiar
-        # para uma variável inumeros dados, para não deixar lento, podendo
-        # carregar x nº de registros e depois setar o cursor para os
-        # próximos x nº de registros
-
-        # Ao utilizar o SSDictCursor deve-se utilizar fetchall_unbuffered()
-        print()
-        print('For 1: ')
-        for row in cursor.fetchall_unbuffered():
-            print(row)
-
-            if row['id'] >= 5:
-                break
-
-        print()
-        print('For 2: ')
-        # cursor.scroll(-1)  # Dará erro - Ele nunca volta
-        # cursor.scroll(1)  # Não dará erro
-        for row in cursor.fetchall_unbuffered():
-            print(row)
+        for row in cursor.fetchall():
+            _id, name, age = row
+            print(_id, name, age)
