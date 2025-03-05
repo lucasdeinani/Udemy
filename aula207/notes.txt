@@ -1,0 +1,14 @@
+# python -m venv venv
+
+# pip install -r requirements.txt
+
+# django-admin startproject project .
+# Cria um novo projeto chamado project
+# "." e joga os arquivos na raiz do project
+
+# python manage.py runserver
+# Sobe o servidor
+
+# Ctrl+C -> Para o servidor
+
+# pip freeze > requirements.txt
