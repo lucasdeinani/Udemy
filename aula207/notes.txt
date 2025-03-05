@@ -1,3 +1,5 @@
+# https://www.djangoproject.com
+
 # python -m venv venv
 
 # pip install -r requirements.txt
@@ -10,5 +12,12 @@
 # Sobe o servidor
 
 # Ctrl+C -> Para o servidor
+
+# django-admin --help
+
+# A única vez que utiliza o django-admin é para utilizar o comando
+# startproject nome_do_projeto .
+
+# Da também pra faazer django-admin runserver, porém pode ser que dê erro
 
 # pip freeze > requirements.txt
