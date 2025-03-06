@@ -22,12 +22,20 @@ from django.http import HttpResponse
 # MVT -> Model-View-Template (MVC -> Model-View-Controller)
 
 
-def my_view(request):
-    print('posso fazer outras coisas')
-    return HttpResponse('Uma mensagem para alguém especial')
+def home(request):  # Estas funções são chamadas de views
+    print('home')
+    return HttpResponse('home')
+
+
+def blog(request):
+    print('blog')
+    return HttpResponse('blog')
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('blog/', my_view),
+    # Apatir do momento que eu adiciono uma outra url aqui
+    # dentro o home '' - '/' - 'http://127.0.0.1:8000/' não existe mais
+    path('', home),
+    path('blog/', blog),
 ]
