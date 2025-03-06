@@ -1,4 +1,5 @@
 # https://www.djangoproject.com
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
 
 # python -m venv venv
 
