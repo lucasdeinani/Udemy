@@ -1,0 +1,26 @@
+# https://www.geeksforgeeks.org/sql-ddl-dql-dml-dcl-tcl-commands/
+# https://dev.mysql.com/doc/refman/8.0/en/data-types.html
+
+# python -m venv venv
+
+# pip install -r requirements.txt
+
+# Comandos Docker
+
+# Sobe container
+# docker-compose up
+
+# Quais containers rodando
+# docker ps
+
+# Containers existentes
+# docker ps -a
+
+# Sobe container e libera terminal
+# docker-compose up -d
+
+# Parar container
+# docker container stop "container_id" -> podendo ser os 3 primeiros caracteres
+
+# Iniciar um container específico
+# docker container start "container_id" -> podendo ser os 3 primeiros caracteres
