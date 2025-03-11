@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+  extra_sql:
+    env_file:
+      - .env
+    container_name: extra_sql
+    hostname: extra_sql
+    image: mysql:8
+    restart: always
+    command:
+      - --mysql-native-password=ON
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --innodb_force_recovery=0
+    volumes:
+      - ./extra_sql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      TZ: America/Sao_Paulo
