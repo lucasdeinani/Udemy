@@ -20,4 +20,4 @@ order by id asc, first_name desc;
 select id, first_name, email as uemail
 from users
 where id between 100 and 150
-order first_name desc, by id asc;
+order by first_name desc, by id asc;
