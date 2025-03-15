@@ -29,7 +29,7 @@ COLLATE=utf8mb4_unicode_ci;
 
 # Terceira query
 
-CREATE TABLE base_de_dados.user_roles (
+CREATE TABLE base_de_dados.users_roles (
 	user_id INT UNSIGNED NOT NULL,
 	role_id INT UNSIGNED NOT NULL,
 	CONSTRAINT user_roles_pk PRIMARY KEY (user_id,role_id),
@@ -68,8 +68,8 @@ ALTER TABLE base_de_dados.users ADD updated_at DATETIME DEFAULT NOW() on UPDATE 
 
 # Sétima query
 
-ALTER TABLE base_de_dados.user_roles ADD created_at DATETIME DEFAULT NOW() NOT NULL;
-ALTER TABLE base_de_dados.user_roles ADD updated_at DATETIME DEFAULT NOW() on UPDATE NOW() NOT NULL;
+ALTER TABLE base_de_dados.users_roles ADD created_at DATETIME DEFAULT NOW() NOT NULL;
+ALTER TABLE base_de_dados.users_roles ADD updated_at DATETIME DEFAULT NOW() on UPDATE NOW() NOT NULL;
 
 
 # Oitáva query
