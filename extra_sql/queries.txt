@@ -70,3 +70,8 @@ ALTER TABLE base_de_dados.users ADD updated_at DATETIME DEFAULT NOW() on UPDATE 
 
 ALTER TABLE base_de_dados.user_roles ADD created_at DATETIME DEFAULT NOW() NOT NULL;
 ALTER TABLE base_de_dados.user_roles ADD updated_at DATETIME DEFAULT NOW() on UPDATE NOW() NOT NULL;
+
+
+# Oitáva query
+
+ALTER TABLE base_de_dados.users ADD salary DECIMAL(15, 2) NULL;
